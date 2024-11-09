@@ -159,3 +159,37 @@ LIMIT
   }
 ]
 */
+
+
+/*
+This query shows that the skill pyspark appears twice according to our conditions:
+1. The job title is Data Analyst.
+2. Work from home is true.
+3. Average year salary is not null.
+From this query we can calculate the average salary for all Data Analyst jobs using this this skill: 160515.0 + 255829.5 = 208172
+Which is the result in the first row in the last query of the file.
+
+*/
+SELECT
+    sd.skills,
+    jpf.salary_year_avg
+FROM
+    job_postings_fact AS jpf INNER JOIN skills_job_dim AS sjd
+    ON jpf.job_id = sjd.job_id INNER JOIN skills_dim AS sd
+    ON sjd.skill_id = sd.skill_id
+WHERE
+    jpf.job_title_short = 'Data Analyst' AND
+    jpf.job_work_from_home = true AND
+    jpf.salary_year_avg IS NOT NULL AND
+    sd.skills = 'pyspark';
+
+-- [
+--   {
+--     "skills": "pyspark",
+--     "salary_year_avg": "160515.0"
+--   },
+--   {
+--     "skills": "pyspark",
+--     "salary_year_avg": "255829.5"
+--   }
+-- ]
